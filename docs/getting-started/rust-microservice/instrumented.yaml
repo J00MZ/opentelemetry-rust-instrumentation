@@ -1,0 +1,164 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rust-gateway
+  namespace: rust-demo
+  labels:
+    app.kubernetes.io/name: rust-gateway
+    app.kubernetes.io/component: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rust-gateway
+  template:
+    metadata:
+      labels:
+        app: rust-gateway
+    spec:
+      shareProcessNamespace: true
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: gateway
+          image: rust-demo/gateway:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: BACKEND_URL
+              value: "http://rust-backend:9090"
+            - name: RUST_LOG
+              value: "info"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+              
+        - name: otel-rust-agent
+          image: otel/rust-instrumentation:v0.1.0
+          env:
+            - name: OTEL_TARGET_EXE
+              value: /app/gateway
+            - name: OTEL_SERVICE_NAME
+              value: rust-gateway
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "jaeger:4317"
+          securityContext:
+            runAsUser: 0
+            capabilities:
+              add:
+                - SYS_PTRACE
+            privileged: true
+          volumeMounts:
+            - mountPath: /sys/kernel/debug
+              name: kernel-debug
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+      volumes:
+        - name: kernel-debug
+          hostPath:
+            path: /sys/kernel/debug
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rust-gateway
+  namespace: rust-demo
+spec:
+  selector:
+    app: rust-gateway
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rust-backend
+  namespace: rust-demo
+  labels:
+    app.kubernetes.io/name: rust-backend
+    app.kubernetes.io/component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rust-backend
+  template:
+    metadata:
+      labels:
+        app: rust-backend
+    spec:
+      shareProcessNamespace: true
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: backend
+          image: rust-demo/backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9090
+              name: grpc
+          env:
+            - name: RUST_LOG
+              value: "info"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+              
+        - name: otel-rust-agent
+          image: otel/rust-instrumentation:v0.1.0
+          env:
+            - name: OTEL_TARGET_EXE
+              value: /app/backend
+            - name: OTEL_SERVICE_NAME
+              value: rust-backend
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "jaeger:4317"
+          securityContext:
+            runAsUser: 0
+            capabilities:
+              add:
+                - SYS_PTRACE
+            privileged: true
+          volumeMounts:
+            - mountPath: /sys/kernel/debug
+              name: kernel-debug
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+      volumes:
+        - name: kernel-debug
+          hostPath:
+            path: /sys/kernel/debug
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rust-backend
+  namespace: rust-demo
+spec:
+  selector:
+    app: rust-backend
+  ports:
+    - name: grpc
+      port: 9090
+      targetPort: 9090
+

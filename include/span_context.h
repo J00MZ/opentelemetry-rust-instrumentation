@@ -1,0 +1,56 @@
+#ifndef __SPAN_CONTEXT_H__
+#define __SPAN_CONTEXT_H__
+
+#include "utils.h"
+
+#define SPAN_CONTEXT_STRING_SIZE 55
+#define MAX_CONCURRENT_SPANS 100
+
+struct span_context {
+    unsigned char TraceID[TRACE_ID_SIZE];
+    unsigned char SpanID[SPAN_ID_SIZE];
+};
+
+struct {
+    __uint(type, BPF_MAP_TYPE_HASH);
+    __type(key, void*);
+    __type(value, struct span_context);
+    __uint(max_entries, MAX_CONCURRENT_SPANS);
+    __uint(pinning, LIBBPF_PIN_BY_NAME);
+} spans_in_progress SEC(".maps");
+
+static __always_inline struct span_context generate_span_context() {
+    struct span_context context = {};
+    generate_random_bytes(context.TraceID, TRACE_ID_SIZE);
+    generate_random_bytes(context.SpanID, SPAN_ID_SIZE);
+    return context;
+}
+
+static __always_inline void span_context_to_w3c_string(struct span_context *ctx, char* buff) {
+    char *out = buff;
+
+    *out++ = '0';
+    *out++ = '0';
+    *out++ = '-';
+
+    bytes_to_hex_string(ctx->TraceID, TRACE_ID_SIZE, out);
+    out += TRACE_ID_STRING_SIZE;
+    *out++ = '-';
+
+    bytes_to_hex_string(ctx->SpanID, SPAN_ID_SIZE, out);
+    out += SPAN_ID_STRING_SIZE;
+    *out++ = '-';
+
+    *out++ = '0';
+    *out   = '1';
+}
+
+static __always_inline void w3c_string_to_span_context(char *str, struct span_context *ctx) {
+    u32 trace_id_start_pos = 3;
+    u32 span_id_start_pos = 36;
+    hex_string_to_bytes(str + trace_id_start_pos, TRACE_ID_STRING_SIZE, ctx->TraceID);
+    hex_string_to_bytes(str + span_id_start_pos, SPAN_ID_STRING_SIZE, ctx->SpanID);
+}
+
+#endif /* __SPAN_CONTEXT_H__ */
+

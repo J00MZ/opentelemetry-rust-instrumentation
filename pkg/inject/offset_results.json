@@ -1,0 +1,134 @@
+{
+  "hyper": {
+    "0.14.0": {
+      "Request": {
+        "method": 0,
+        "uri": 24,
+        "version": 48,
+        "headers": 56,
+        "extensions": 112,
+        "body": 128
+      },
+      "Response": {
+        "status": 0,
+        "version": 2,
+        "headers": 8,
+        "extensions": 64,
+        "body": 80
+      },
+      "Uri": {
+        "scheme": 0,
+        "authority": 24,
+        "path_and_query": 48
+      }
+    },
+    "1.0.0": {
+      "Request": {
+        "method": 0,
+        "uri": 32,
+        "version": 64,
+        "headers": 72,
+        "extensions": 136,
+        "body": 152
+      },
+      "Response": {
+        "status": 0,
+        "version": 2,
+        "headers": 8,
+        "extensions": 72,
+        "body": 88
+      },
+      "Uri": {
+        "scheme": 0,
+        "authority": 32,
+        "path_and_query": 64
+      }
+    }
+  },
+  "tonic": {
+    "0.10.0": {
+      "Request": {
+        "metadata": 0,
+        "message": 48,
+        "extensions": 56
+      },
+      "Response": {
+        "metadata": 0,
+        "message": 48,
+        "extensions": 56
+      },
+      "GrpcMethod": {
+        "service": 0,
+        "method": 24
+      }
+    },
+    "0.11.0": {
+      "Request": {
+        "metadata": 0,
+        "message": 48,
+        "extensions": 64
+      },
+      "Response": {
+        "metadata": 0,
+        "message": 48,
+        "extensions": 64
+      },
+      "GrpcMethod": {
+        "service": 0,
+        "method": 32
+      }
+    }
+  },
+  "reqwest": {
+    "0.11.0": {
+      "Request": {
+        "method": 0,
+        "url": 24,
+        "headers": 80,
+        "body": 136
+      },
+      "Response": {
+        "url": 0,
+        "status": 56,
+        "headers": 64
+      }
+    },
+    "0.12.0": {
+      "Request": {
+        "method": 0,
+        "url": 32,
+        "headers": 96,
+        "body": 160
+      },
+      "Response": {
+        "url": 0,
+        "status": 64,
+        "headers": 72
+      }
+    }
+  },
+  "axum": {
+    "0.6.0": {
+      "Router": {
+        "inner": 0
+      }
+    },
+    "0.7.0": {
+      "Router": {
+        "inner": 0
+      }
+    }
+  },
+  "tokio": {
+    "1.0.0": {
+      "Runtime": {
+        "handle": 0,
+        "blocking_pool": 8
+      },
+      "JoinHandle": {
+        "raw": 0
+      }
+    }
+  }
+}
+
