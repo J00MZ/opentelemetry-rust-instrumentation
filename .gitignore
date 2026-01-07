@@ -1,0 +1,27 @@
+# Rust
+/target/
+Cargo.lock
+
+# BPF compiled objects
+*.bpf.o
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+/dist/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+
