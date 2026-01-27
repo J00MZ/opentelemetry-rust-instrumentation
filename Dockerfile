@@ -1,4 +1,4 @@
-FROM fedora:39 AS builder
+FROM fedora:44 AS builder
 
 ARG TARGETARCH
 
