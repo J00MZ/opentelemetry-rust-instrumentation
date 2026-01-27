@@ -29,7 +29,7 @@ opentelemetry-semantic-conventions = "0.31"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 nix = { version = "0.31", features = ["process", "ptrace"] }
-goblin = "0.8"
+goblin = "0.10"
 gimli = "0.33"
 memmap2 = "0.9"
 procfs = "0.18"
