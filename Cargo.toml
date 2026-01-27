@@ -32,7 +32,7 @@ nix = { version = "0.27", features = ["process", "ptrace"] }
 goblin = "0.8"
 gimli = "0.28"
 memmap2 = "0.9"
-procfs = "0.16"
+procfs = "0.18"
 notify = "6.1"
 async-trait = "0.1"
 
