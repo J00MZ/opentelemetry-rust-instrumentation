@@ -33,7 +33,7 @@ goblin = "0.10"
 gimli = "0.33"
 memmap2 = "0.9"
 procfs = "0.18"
-notify = "6.1"
+notify = "8.0"
 async-trait = "0.1"
 
 [build-dependencies]
