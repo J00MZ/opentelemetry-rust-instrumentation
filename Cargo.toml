@@ -37,7 +37,7 @@ notify = "8.0"
 async-trait = "0.1"
 
 [build-dependencies]
-aya-build = "0.1"
+aya-build = "0.2"
 
 [profile.release]
 lto = true
