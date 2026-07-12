@@ -23,7 +23,7 @@ rustc-demangle = "0.1"
 thiserror = "2.0"
 tokio = { version = "1.35", features = ["full", "signal"] }
 opentelemetry = "0.31"
-opentelemetry_sdk = { version = "0.31", features = ["rt-tokio"] }
+opentelemetry_sdk = { version = "0.32", features = ["rt-tokio"] }
 opentelemetry-otlp = { version = "0.31", features = ["grpc-tonic"] }
 opentelemetry-semantic-conventions = "0.31"
 serde = { version = "1.0", features = ["derive"] }
