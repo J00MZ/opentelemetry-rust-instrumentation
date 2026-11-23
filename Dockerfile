@@ -25,7 +25,7 @@ COPY Makefile ./
 
 RUN make build
 
-FROM registry.fedoraproject.org/fedora-minimal:45
+FROM registry.fedoraproject.org/fedora-minimal:46
 
 RUN microdnf install -y libbpf elfutils-libelf && microdnf clean all
 
